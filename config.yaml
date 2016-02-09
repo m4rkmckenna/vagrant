@@ -1,0 +1,51 @@
+defaults:
+  box: ubuntu/vivid64
+  ram: 512
+  cpus: 1
+masters:
+  - hostname: brooklyn-master
+    enabled: true
+    ip: 10.10.10.101
+    box: ubuntu/vivid64
+    ram: 2048
+    cpus: 2
+    shell:
+    - curl -s -L "https://repository.apache.org/service/local/artifact/maven/redirect?r=snapshots&g=org.apache.brooklyn&a=brooklyn-dist&v=LATEST&p=tar.gz&c=dist" -o brooklyn-dist.tar.gz
+    - tar -xvf brooklyn-dist.tar.gz
+    - ln -s /home/vagrant/brooklyn-dist-0.9.0-SNAPSHOT /home/vagrant/active-brooklyn
+    - export DEBIAN_FRONTEND=noninteractive; sudo add-apt-repository ppa:jpsutton/cockpit -y; sudo apt-get update;
+    - sudo apt-get install --yes openjdk-8-jre-headless cockpit
+    - sudo ln -s /vagrant/file-store/brooklyn.service /etc/systemd/system/brooklyn.service
+    - mkdir -p /home/vagrant/.brooklyn
+    - cp /vagrant/file-store/brooklyn.properties /home/vagrant/.brooklyn/
+    - chmod 600 /home/vagrant/.brooklyn/brooklyn.properties
+    - sudo systemctl start brooklyn cockpit
+  - hostname: brooklyn-test-master
+    enabled: false
+    ip: 10.10.10.102
+    box: ubuntu/vivid64
+    ram: 2048
+    cpus: 2
+    sync_folders:
+      - source: /Users/mark/.m2/repository/io/cloudsoft/amp/qa-test-dist/1.0-SNAPSHOT
+        destination: /test-dist
+    shell:
+    - mkdir active-brooklyn
+    - tar -xvf /test-dist/qa-test-dist-1.0-SNAPSHOT-dist.tar.gz -C active-brooklyn
+    - export DEBIAN_FRONTEND=noninteractive; sudo add-apt-repository ppa:jpsutton/cockpit -y; sudo apt-get update;
+    - sudo apt-get install --yes openjdk-8-jre-headless cockpit
+    - sudo ln -s /vagrant/file-store/brooklyn.service /etc/systemd/system/brooklyn.service
+    - mkdir -p /home/vagrant/.brooklyn
+    - cp /vagrant/file-store/brooklyn.properties /home/vagrant/.brooklyn/
+    - chmod 600 /home/vagrant/.brooklyn/brooklyn.properties
+    - sudo systemctl start brooklyn cockpit
+minions:
+  - hostname: minion1
+    ip: 10.10.100.101
+    box: ubuntu/vivid64
+  - hostname: minion2
+    ip: 10.10.100.102
+    box: ubuntu/vivid64
+  - hostname: minion3
+    ip: 10.10.100.103
+    box: ubuntu/vivid64
