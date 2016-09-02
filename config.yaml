@@ -13,15 +13,15 @@ masters:
     #   - source: /Users/mark/Workspaces/vagrant/file-store
     #     destination: /file-store
     shell:
-      - curl -s -L "https://artifactory.cloudsoftcorp.com/artifactory/libs-release-local/io/cloudsoft/amp/cloudsoft-amp-karaf/4.0.0-20160826.1547/cloudsoft-amp-karaf-4.0.0-20160826.1547-all.deb" -o cloudsoft-amp-karaf.deb
+      - curl -s -L "https://artifactory.cloudsoftcorp.com/artifactory/libs-release-local/io/cloudsoft/amp/cloudsoft-amp-karaf/4.0.1-20160831.2103/cloudsoft-amp-karaf-4.0.1-20160831.2103-all.deb" -o cloudsoft-amp-karaf.deb
       - export DEBIAN_FRONTEND=noninteractive; sudo apt-get update;
-      # - sudo apt-get install --yes openjdk-8-jre-headless
       - sudo apt-get install --yes default-jre-headless
       - sudo dpkg -i cloudsoft-amp-karaf.deb
-      - sudo echo "brooklyn.webconsole.security.users=admin" >> /opt/amp/etc/brooklyn.cfg
-      - sudo echo "brooklyn.webconsole.security.user.admin.password=password" >> /opt/amp/etc/brooklyn.cfg
-      - sudo systemctl restart amp
       - sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8081
+      - sudo chmod g+rw -R /opt/amp
+      - sudo usermod -a -G amp ubuntu
+      - sed -i '_original' 's/^#brooklyn.webconsole.security/brooklyn.webconsole.security/g' /opt/amp/etc/brooklyn.cfg
+      - sudo systemctl restart amp
 minions:
   - hostname: minion1
     ip: 10.10.100.101
