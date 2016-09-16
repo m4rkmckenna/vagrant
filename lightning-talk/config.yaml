@@ -27,31 +27,13 @@ masters:
 minions:
   - hostname: up
     ip: 10.10.100.101
-    box: ubuntu/wily64
-    ram: 1048
-    cpus: 1
   - hostname: down
     ip: 10.10.100.102
-    box: ubuntu/wily64
-    ram: 1048
-    cpus: 1
   - hostname: charm
     ip: 10.10.100.103
-    box: ubuntu/wily64
-    ram: 1048
-    cpus: 1
   - hostname: strange
     ip: 10.10.100.104
-    box: ubuntu/wily64
-    ram: 1048
-    cpus: 1
   - hostname: top
     ip: 10.10.100.105
-    box: ubuntu/wily64
-    ram: 1048
-    cpus: 1
   - hostname: bottom
     ip: 10.10.100.106
-    box: ubuntu/wily64
-    ram: 1048
-    cpus: 1
