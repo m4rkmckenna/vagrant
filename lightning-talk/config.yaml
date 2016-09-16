@@ -10,7 +10,7 @@ masters:
     ram: 2048
     cpus: 2
     sync_folders:
-      - source: /Users/mark/Workspaces/lightning-talk/file-store
+      - source: /Users/mark/Workspaces/vagrant/lightning-talk/file-store
         destination: /file-store
     shell:
       - export DEBIAN_FRONTEND=noninteractive; sudo apt-get update; sudo apt-get install --yes default-jre-headless

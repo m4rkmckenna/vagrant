@@ -1,23 +1,23 @@
-brooklyn.location.named.Up=byon:(hosts="172.20.100.101")
+brooklyn.location.named.Up=byon:(hosts="10.10.100.101")
 brooklyn.location.named.Up.user=vagrant
 brooklyn.location.named.Up.password=vagrant
 
-brooklyn.location.named.Down=byon:(hosts="172.20.100.101")
+brooklyn.location.named.Down=byon:(hosts="10.10.100.101")
 brooklyn.location.named.Down.user=vagrant
 brooklyn.location.named.Down.password=vagrant
 
-brooklyn.location.named.Charm=byon:(hosts="172.20.100.102")
+brooklyn.location.named.Charm=byon:(hosts="10.10.100.102")
 brooklyn.location.named.Charm.user=vagrant
 brooklyn.location.named.Charm.password=vagrant
 
-brooklyn.location.named.Strange=byon:(hosts="172.20.100.103")
+brooklyn.location.named.Strange=byon:(hosts="10.10.100.103")
 brooklyn.location.named.Strange.user=vagrant
 brooklyn.location.named.Strange.password=vagrant
 
-brooklyn.location.named.Top=byon:(hosts="172.20.100.104")
+brooklyn.location.named.Top=byon:(hosts="10.10.100.104")
 brooklyn.location.named.Top.user=vagrant
 brooklyn.location.named.Top.password=vagrant
 
-brooklyn.location.named.Bottom=byon:(hosts="172.20.100.105")
+brooklyn.location.named.Bottom=byon:(hosts="10.10.100.105")
 brooklyn.location.named.Bottom.user=vagrant
 brooklyn.location.named.Bottom.password=vagrant
