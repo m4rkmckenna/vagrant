@@ -13,7 +13,7 @@ masters:
     #   - source: /Users/mark/Workspaces/vagrant/file-store
     #     destination: /file-store
     shell:
-      - echo "--AMP D/L START--"; curl -# -s -L "http://downloads.cloudsoftcorp.com/amp/latest/cloudsoft-amp-karaf-latest-all.deb" -o cloudsoft-amp-karaf.deb; echo "--AMP D/L COMPLETE--"
+      - echo "--AMP D/L START--"; curl -s -L "http://downloads.cloudsoftcorp.com/amp/latest/cloudsoft-amp-karaf-latest-all.deb" -o cloudsoft-amp-karaf.deb; echo "--AMP D/L COMPLETE--"
       - export DEBIAN_FRONTEND=noninteractive; sudo apt-get update; sudo apt-get install --yes default-jre-headless
       - sudo dpkg -i cloudsoft-amp-karaf.deb
       - sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8081

@@ -1,0 +1,7 @@
+org.osgi.service.http.port.secure=8443
+org.osgi.service.http.secure.enabled=true
+org.ops4j.pax.web.ssl.keystore=/opt/amp/etc/keystores/keystore.jks
+org.ops4j.pax.web.ssl.password=password
+org.ops4j.pax.web.ssl.keypassword=password
+org.ops4j.pax.web.ssl.clientauthwanted=false
+org.ops4j.pax.web.ssl.clientauthneeded=false

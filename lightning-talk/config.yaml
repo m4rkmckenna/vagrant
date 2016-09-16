@@ -1,0 +1,57 @@
+defaults:
+  box: ubuntu/wily64
+  ram: 1024
+  cpus: 1
+masters:
+  - hostname: hydrogen
+    enabled: true
+    ip: 10.10.10.101
+    box: ubuntu/wily64
+    ram: 2048
+    cpus: 2
+    sync_folders:
+      - source: /Users/mark/Workspaces/lightning-talk/file-store
+        destination: /file-store
+    shell:
+      - export DEBIAN_FRONTEND=noninteractive; sudo apt-get update; sudo apt-get install --yes default-jre-headless
+      - sudo dpkg -i /file-store/cloudsoft-amp-karaf-4.0.0-SNAPSHOT-all.deb
+      - sudo mkdir -p /opt/amp/etc/keystores
+      - sudo keytool -keystore /opt/amp/etc/keystores/keystore.jks -storepass password -genkey -noprompt -keyalg RSA -validity 365 -alias serverkey -keypass password -dname "CN=10.10.10.101, OU=UI, O=Cloudsoft, L=Belfast, ST=Antrim, C=IE"
+      - sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports 8443
+      - sudo chmod a+rw -R /opt/amp; sudo usermod -a -G amp ubuntu
+      - sed -i -E 's/^#brooklyn\.webconsole\.security/brooklyn.webconsole.security/g' /opt/amp/etc/brooklyn.cfg
+      - cat /file-store/location.txt >> /opt/amp/etc/brooklyn.cfg
+      - cat /file-store/ssl.txt >> /opt/amp/etc/org.ops4j.pax.web.cfg; sleep 5s;
+      - sudo systemctl restart amp; sleep 30s;
+      - cp /file-store/amp-ui-enricher-1.0.0-SNAPSHOT.jar /opt/amp/deploy
+minions:
+  - hostname: up
+    ip: 10.10.100.101
+    box: ubuntu/wily64
+    ram: 1048
+    cpus: 1
+  - hostname: down
+    ip: 10.10.100.102
+    box: ubuntu/wily64
+    ram: 1048
+    cpus: 1
+  - hostname: charm
+    ip: 10.10.100.103
+    box: ubuntu/wily64
+    ram: 1048
+    cpus: 1
+  - hostname: strange
+    ip: 10.10.100.104
+    box: ubuntu/wily64
+    ram: 1048
+    cpus: 1
+  - hostname: top
+    ip: 10.10.100.105
+    box: ubuntu/wily64
+    ram: 1048
+    cpus: 1
+  - hostname: bottom
+    ip: 10.10.100.106
+    box: ubuntu/wily64
+    ram: 1048
+    cpus: 1
