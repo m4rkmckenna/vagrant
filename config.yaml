@@ -3,36 +3,38 @@ defaults:
   ram: 1024
   cpus: 1
 masters:
-  - hostname: amp
+  - hostname: hydrogen
     enabled: true
-    ip: 10.10.100.101
-    box: ubuntu/xenial64
+    ip: 10.10.10.101
+    box: ubuntu/wily64
     ram: 2048
     cpus: 2
-    # sync_folders:
-    #   - source: /Users/mark/Workspaces/vagrant/file-store
-    #     destination: /file-store
+    sync_folders:
+      - source: /Users/mark/Workspaces/vagrant/file-store
+        destination: /file-store
+      - source: /Users/mark/.m2
+        destination: /dot-m2
     shell:
-      - echo "--AMP D/L START--"; curl -s -L "http://downloads.cloudsoftcorp.com/amp/latest/cloudsoft-amp-karaf-latest-all.deb" -o cloudsoft-amp-karaf.deb; echo "--AMP D/L COMPLETE--"
       - export DEBIAN_FRONTEND=noninteractive; sudo apt-get update; sudo apt-get install --yes default-jre-headless
-      - sudo dpkg -i cloudsoft-amp-karaf.deb
-      - sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8081
+      - sudo dpkg -i /dot-m2/repository/io/cloudsoft/amp/cloudsoft-amp-karaf/4.1.0-SNAPSHOT/cloudsoft-amp-karaf-4.1.0-SNAPSHOT-all.deb
+      - sudo mkdir -p /opt/amp/etc/keystores
+      - sudo keytool -keystore /opt/amp/etc/keystores/keystore.jks -storepass password -genkey -noprompt -keyalg RSA -validity 365 -alias serverkey -keypass password -dname 'CN=10.10.10.101, OU=UI, O=Cloudsoft, L=Belfast, ST=Antrim, C=IE'
+      - sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports 8443
       - sudo chmod a+rw -R /opt/amp; sudo usermod -a -G amp ubuntu
       - sed -i -E 's/^#brooklyn\.webconsole\.security/brooklyn.webconsole.security/g' /opt/amp/etc/brooklyn.cfg
-      - sudo systemctl restart amp
+      - cat /file-store/location.txt >> /opt/amp/etc/brooklyn.cfg
+      - cat /file-store/ssl.txt >> /opt/amp/etc/org.ops4j.pax.web.cfg; sleep 5s;
+      - sudo systemctl restart amp; sleep 30s;
 minions:
-  - hostname: minion1
+  - hostname: up
     ip: 10.10.100.101
-    box: ubuntu/wily64
-    ram: 2048
-    cpus: 2
-  - hostname: minion2
+  - hostname: down
     ip: 10.10.100.102
-    box: ubuntu/wily64
-    ram: 2048
-    cpus: 2
-  - hostname: minion3
+  - hostname: charm
     ip: 10.10.100.103
-    box: ubuntu/wily64
-    ram: 2048
-    cpus: 2
+  - hostname: strange
+    ip: 10.10.100.104
+  - hostname: top
+    ip: 10.10.100.105
+  - hostname: bottom
+    ip: 10.10.100.106
